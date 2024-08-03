@@ -7,7 +7,7 @@
 			<div
 				v-for="game in props.games"
 				:key="game.id"
-				class="dark:text-neutral-100 text-slate-900"
+				class="dark:text-neutral-100 text-slate-900 text-center"
 			>
 				{{ game.name }}
 			</div>
@@ -27,7 +27,7 @@
 		<RotationDialogComponent
 			v-if="openDialog"
 			class="self-center"
-			:dialog-message="'Are you sure?'"
+			:dialog-message="insult()"
 			:games="games"
 			@close="openDialog = false"
 			@reload-data="$emit('reload-data')"
@@ -37,12 +37,35 @@
 
 <script setup>
 import { computed, defineProps, ref } from "vue";
+import dayjs from "dayjs";
 
 import RotationDialogComponent from "@/components/RotationDialogComponent.vue";
 
 const props = defineProps({
 	games: Object,
+	lastUpdate: String,
 });
+
+const dayJs = dayjs();
+
+const dateShort = [
+	"Omg der er kun gået x antal dage din noob",
+	"Keder du dig seriøst allerede..?",
+	"Nåååå vi prøver rigtigt nok at snyde listen lille Pede",
+	"Har du fået lov til det her?",
+	"Enten så lyver du lige nu ellers spiller vi for meget",
+];
+const dateLong = [
+	"Ja det jo typisk dig... aldrig tid til at spille",
+	"DER ER GÅET x DAGE DIN NOOB",
+	"hvorfor spiller vi aldrig",
+];
+
+const sameDay = [
+	"DER ER GÅET EN DAG",
+	"SÅ SLAPPER DU",
+	"DER ER IKKE ENGANG GÅET ÈN DAG",
+];
 
 const openDialog = ref(false);
 
@@ -50,4 +73,29 @@ const gameList = computed(() => {
 	if (props.games.length > 1) return true;
 	return false;
 });
+
+function insult() {
+	if (props.lastUpdate) {
+		let lastDateUpdated = dayjs(props.lastUpdate);
+
+		if (dayJs.isSame(lastDateUpdated, "day")) {
+			const randomIndex = Math.floor(Math.random() * sameDay.length);
+			return sameDay[randomIndex];
+		} else if (dayJs.isBefore(lastDateUpdated.add(14, "day"))) {
+			const randomIndex = Math.floor(Math.random() * dateShort.length);
+			return dateShort[randomIndex].replace(
+				"x",
+				lastDateUpdated.diff(dayJs, "day")
+			);
+		} else if (dayJs.isAfter(lastDateUpdated.add(1, "month"))) {
+			const randomIndex = Math.floor(Math.random() * dateLong.length);
+			return dateLong[randomIndex].replace(
+				"x",
+				dayJs.diff(lastDateUpdated, "day")
+			);
+		} else
+			return "Det er første gang du er tilfredsstillende tidsmæssigt... siger Sandra også";
+	}
+	return "Are you sure?";
+}
 </script>

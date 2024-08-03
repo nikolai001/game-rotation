@@ -1,5 +1,5 @@
 <template>
-	<div class="absolute bg-neutral-300 dark:bg-slate-800 w-4/12 max-w-80 aspect-video rounded-md shadow flex flex-col justify-center translate-y-8">
+	<div class="absolute bg-neutral-300 dark:bg-slate-800 w-4/12 min-w-44 max-w-80 aspect-video rounded-md shadow flex flex-col justify-center translate-y-8">
 		<mdicon
 			v-if="loading"
 			class="dark:text-neutral-100 text-slate-900 self-center mt-auto"
@@ -7,7 +7,7 @@
 			spin
 		/>
 		<span
-			class="dark:text-neutral-100 text-slate-900 self-center mt-auto"
+			class="dark:text-neutral-100 text-slate-900 self-center mt-auto text-center"
 			v-text="props.dialogMessage"
 		/>
 

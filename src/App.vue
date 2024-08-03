@@ -3,6 +3,7 @@
 		<ToggleSwitchComponent />
 		<GameList
 			:games="games"
+			:last-update="lastUpdate"
 			class="mx-auto"
 			@reload-data="fetchOrderedList()"
 		/>
@@ -15,6 +16,7 @@ import ToggleSwitchComponent from "@/components/ToggleSwitchComponent.vue";
 import { onMounted, ref } from "vue";
 
 const games = ref([]);
+const lastUpdate = ref("");
 
 async function fetchInitialGamesList() {
 	try {
@@ -39,6 +41,8 @@ async function fetchOrderedList() {
 
 		if (data.length > 0 && data[0] && data[0].games) {
 			games.value = data[0].games.games;
+			console.log(data[0].updated_at);
+			lastUpdate.value = data[0].updated_at;
 		} else {
 			// Fallback to initial games list if database data is not available or empty
 			fetchInitialGamesList();
