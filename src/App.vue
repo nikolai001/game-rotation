@@ -4,27 +4,53 @@
 		<GameList
 			:games="games"
 			class="mx-auto"
+			@reload-data="fetchOrderedList()"
 		/>
 	</main>
 </template>
-
-<script setup>
+  
+  <script setup>
 import GameList from "@/components/GameListComponent.vue";
 import ToggleSwitchComponent from "@/components/ToggleSwitchComponent.vue";
 import { onMounted, ref } from "vue";
 
-const games = ref({});
+const games = ref([]);
 
-onMounted(async () => {
+async function fetchInitialGamesList() {
 	try {
-		let response = await fetch("http://localhost:8080/games.json");
+		let response = await fetch("games.json");
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
 		let data = await response.json();
 		games.value = data.games;
 	} catch (e) {
-		console.error(e);
+		console.error("Error fetching initial games list:", e);
 	}
+}
+
+async function fetchOrderedList() {
+	try {
+		let response = await fetch("fetchGames.php");
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+		let data = await response.json();
+
+		if (data.length > 0 && data[0] && data[0].games) {
+			games.value = data[0].games.games;
+		} else {
+			// Fallback to initial games list if database data is not available or empty
+			fetchInitialGamesList();
+		}
+	} catch (e) {
+		console.error("Error fetching data from backend:", e);
+		fetchInitialGamesList();
+	}
+}
+
+onMounted(async () => {
+	fetchOrderedList();
 });
 </script>
+  

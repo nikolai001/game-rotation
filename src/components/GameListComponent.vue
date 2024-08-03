@@ -22,16 +22,29 @@
 			v-if="gameList"
 			v-text="'Fresh rotation'"
 			class="self-end bg-green-400 rounded-md px-2 py-1 dark:text-neutral-100 text-slate-900 shadow hover:shadow-md transition-shadow mt-2"
+			@click="openDialog = true"
+		/>
+		<RotationDialogComponent
+			v-if="openDialog"
+			class="self-center"
+			:dialog-message="'Are you sure?'"
+			:games="games"
+			@close="openDialog = false"
+			@reload-data="$emit('reload-data')"
 		/>
 	</section>
 </template>
 
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed, defineProps, ref } from "vue";
+
+import RotationDialogComponent from "@/components/RotationDialogComponent.vue";
 
 const props = defineProps({
 	games: Object,
 });
+
+const openDialog = ref(false);
 
 const gameList = computed(() => {
 	if (props.games.length > 1) return true;
