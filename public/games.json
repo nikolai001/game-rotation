@@ -1,0 +1,40 @@
+{
+    "games": [
+        {
+            "id": 1,
+            "name": "Minecraft / Tekkit"
+        },
+        {
+            "id": 2,
+            "name": "Helldivers"
+        },
+        {
+            "id": 3,
+            "name": "Outlast Trials"
+        },
+        {
+            "id": 4,
+            "name": "We were here serien"
+        },
+        {
+            "id": 5,
+            "name": "Foxhole"
+        },
+        {
+            "id": 6,
+            "name": "Planetside 2"
+        },
+        {
+            "id": 7,
+            "name": "No mans sky"
+        },
+        {
+            "id": 8,
+            "name": "Dont starve together"
+        },
+        {
+            "id": 9,
+            "name": "Stream af gyser spil"
+        }
+    ]
+}

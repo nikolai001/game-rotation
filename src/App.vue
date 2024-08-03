@@ -11,9 +11,20 @@
 <script setup>
 import GameList from "@/components/GameListComponent.vue";
 import ToggleSwitchComponent from "@/components/ToggleSwitchComponent.vue";
+import { onMounted, ref } from "vue";
 
-const games = [
-	{ id: 1, name: "call of duty" },
-	{ id: 2, name: "battlefield" },
-];
+const games = ref({});
+
+onMounted(async () => {
+	try {
+		let response = await fetch("http://localhost:8080/games.json");
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+		let data = await response.json();
+		games.value = data.games;
+	} catch (e) {
+		console.error(e);
+	}
+});
 </script>
