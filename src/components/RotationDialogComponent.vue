@@ -60,7 +60,7 @@ function shuffleGames() {
 async function uploadRotation() {
 	loading.value = true;
 	try {
-		const response = await fetch("uploadGames.php", {
+		const response = await fetch("/api/uploadGames.php", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

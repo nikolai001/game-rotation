@@ -70,7 +70,7 @@ const sameDay = [
 const openDialog = ref(false);
 
 const gameList = computed(() => {
-	if (props.games.length > 1) return true;
+	if (props.games.length >= 1) return true;
 	return false;
 });
 
