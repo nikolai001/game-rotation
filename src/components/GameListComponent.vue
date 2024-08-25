@@ -29,17 +29,19 @@
 			class="self-center"
 			:dialog-message="insult()"
 			:games="games"
-			@close="openDialog = false"
+			@close-modal="openDialog = false"
 			@reload-data="$emit('reload-data')"
 		/>
 	</section>
 </template>
 
 <script setup>
-import { computed, defineProps, ref } from "vue";
+import { computed, defineProps, ref, defineEmits } from "vue";
 import dayjs from "dayjs";
 
 import RotationDialogComponent from "@/components/RotationDialogComponent.vue";
+
+defineEmits(["reload-data", "close-modal"]);
 
 const props = defineProps({
 	games: Object,

@@ -21,7 +21,7 @@
 			<button
 				class="bg-red-400 rounded-md shadow hover:shadow-md transition-shadow py-1 px-3 h-fit dark:text-neutral-100 text-slate-900"
 				v-text="'Cancel'"
-				@click="$emit('close')"
+				@click="$emit('close-modal')"
 			/>
 		</div>
 		<span
@@ -33,7 +33,7 @@
   
 <script setup>
 import { defineProps, defineEmits, ref } from "vue";
-const emit = defineEmits(["reload-data", "close"]);
+defineEmits(["reload-data", "close-modal"]);
 const props = defineProps({
 	games: Object,
 	dialogMessage: String,
@@ -72,8 +72,6 @@ async function uploadRotation() {
 			error.value = "Reshuffling of games failed";
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
-		emit("reload-data");
-		emit("close");
 	} catch (error) {
 		console.error("Error uploading data:", error);
 		error.value = "Reshuffling of games failed";

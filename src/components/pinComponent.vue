@@ -27,7 +27,7 @@
 			<button
 				class="bg-red-400 rounded-md shadow hover:shadow-md transition-shadow py-1 px-3 h-fit dark:text-neutral-100 text-slate-900"
 				v-text="'Cancel'"
-				@click="$emit('close')"
+				@click="emitter.emit('close-modal')"
 			/>
 		</div>
 		<span
@@ -38,9 +38,11 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from "vue";
+import { ref, inject, defineEmits } from "vue";
 
-defineEmits(["close"]);
+const emitter = inject("emitter");
+
+defineEmits(["close-modal"]);
 
 const loading = ref(false);
 

@@ -31,7 +31,6 @@
 		<pinComponent
 			v-if="pinPrompt"
 			class="mx-auto"
-			@close="pinPrompt = false"
 		/>
 	</main>
 </template>
@@ -40,13 +39,20 @@
 import GameList from "@/components/GameListComponent.vue";
 import ToggleSwitchComponent from "@/components/ToggleSwitchComponent.vue";
 import pinComponent from "@/components/pinComponent.vue";
-import { onMounted, ref, watch } from "vue";
+import { inject, onMounted, ref, watch, defineEmits } from "vue";
 
 const games = ref([]);
 const lastUpdate = ref("");
 const lists = ref([]);
 const currentList = ref({});
 const pinPrompt = ref(false);
+const emitter = inject("emitter");
+
+defineEmits(["reload-data", "close-modal"]);
+
+emitter.on("close-modal", () => {
+	currentList.value = null;
+});
 
 async function fetchInitialGamesList() {
 	try {
@@ -100,7 +106,11 @@ async function fetchOrderedList() {
 watch(
 	() => currentList.value,
 	() => {
-		pinPrompt.value = true;
+		if (currentList.value) {
+			pinPrompt.value = true;
+		} else {
+			pinPrompt.value = false;
+		}
 	}
 );
 
